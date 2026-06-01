@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { UNIVERSITIES } from '../data/universities.js'
 import { JOURNALS } from '../data/journals.js'
+import { apiUrl } from '../api.js'
 
 const STEPS = [
   { id: 1, title: 'Universities', description: 'Filter by institution (optional)' },
@@ -408,7 +409,7 @@ export default function Wizard({ onComplete, onCancel }) {
         notification_method: notif.method,
         notification_email: notif.method === 'email' ? notif.email : null,
       }
-      const res = await fetch('/api/search-configs', {
+      const res = await fetch(apiUrl('/api/search-configs'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

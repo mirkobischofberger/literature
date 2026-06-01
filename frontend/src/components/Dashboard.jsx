@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import SearchConfigCard from './SearchConfigCard.jsx'
 import ResultCard from './ResultCard.jsx'
+import { apiUrl } from '../api.js'
 
 export default function Dashboard({ onNewSearch }) {
   const [configs, setConfigs] = useState([])
@@ -16,7 +17,7 @@ export default function Dashboard({ onNewSearch }) {
     setLoadingConfigs(true)
     setError(null)
     try {
-      const res = await fetch('/api/search-configs')
+      const res = await fetch(apiUrl('/api/search-configs'))
       if (!res.ok) throw new Error('Failed to load configs')
       const data = await res.json()
       setConfigs(data)
@@ -32,7 +33,7 @@ export default function Dashboard({ onNewSearch }) {
     try {
       const params = new URLSearchParams({ limit: RESULTS_LIMIT, offset })
       if (configId) params.set('config_id', configId)
-      const res = await fetch(`/api/results?${params}`)
+      const res = await fetch(apiUrl(`/api/results?${params}`))
       if (!res.ok) throw new Error('Failed to load results')
       const data = await res.json()
       if (offset === 0) {

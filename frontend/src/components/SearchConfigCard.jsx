@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { apiUrl } from '../api.js'
 
 const FREQ_LABELS = { daily: 'Daily', weekly: 'Weekly', monthly: 'Monthly' }
 const DB_LABELS = {
@@ -18,7 +19,7 @@ export default function SearchConfigCard({ config, onDelete, onRun, onSelect, is
     setRunning(true)
     setRunMessage(null)
     try {
-      const res = await fetch(`/api/search-configs/${config.id}/run`, { method: 'POST' })
+      const res = await fetch(apiUrl(`/api/search-configs/${config.id}/run`), { method: 'POST' })
       const data = await res.json()
       if (res.ok) {
         setRunMessage(`✓ Found ${data.new_results} new result${data.new_results !== 1 ? 's' : ''}`)
@@ -39,7 +40,7 @@ export default function SearchConfigCard({ config, onDelete, onRun, onSelect, is
     if (!window.confirm(`Delete search "${config.name}"?`)) return
     setDeleting(true)
     try {
-      await fetch(`/api/search-configs/${config.id}`, { method: 'DELETE' })
+      await fetch(apiUrl(`/api/search-configs/${config.id}`), { method: 'DELETE' })
       onDelete && onDelete()
     } finally {
       setDeleting(false)
